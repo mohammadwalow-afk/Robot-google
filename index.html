@@ -6,150 +6,200 @@
 <meta name="theme-color" content="#060913" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-title" content="WALOW CAD" />
-<title>WALOW CAD ULTRA</title>
+<title>WALOW CAD TURBO PRO</title>
 
-<!-- أيقونة التطبيق للشاشة الرئيسية -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2310b981'/%3E%3Ctext x='50' y='66' font-size='52' font-weight='900' fill='%23060913' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E" />
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2310b981'/%3E%3Ctext x='50' y='66' font-size='52' font-weight='900' fill='%23060913' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E" />
-
-<!-- تحميل مكتبات 3D الأساسية فقط بدون خطوط ثقيلة -->
+<!-- تحميل نواة Three.js الأساسية فقط لضمان أقصى سرعة -->
 <script src="https://cloudflare.com"></script>
-<script src="https://jsdelivr.net"></script>
-<script src="https://jsdelivr.net"></script>
 
 <style>
-:root{--bg:#060913;--panel:#0d1428;--blue:#3b82f6;--purple:#8b5cf6;--green:#10b981;--amber:#f59e0b;--txt:#f1f5f9;--mut:#94a3b8}
+:root{--bg:#060913;--card:#0f172a;--blue:#3b82f6;--green:#10b981;--amber:#f59e0b;--red:#ef4444;--txt:#f8fafc;--mut:#94a3b8}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden}
-.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-.glass{background:rgba(13,20,40,.94);border:1px solid rgba(139,92,246,.3);border-radius:14px}
-.hidden{display:none!important}
-header{position:sticky;top:0;z-index:40;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:0;border-width:0 0 1px 0}
-.logo{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#060913;background:linear-gradient(135deg,#10b981,#3b82f6);flex-shrink:0}
-h1{font-size:14px;margin:0;font-weight:900}
-.sub{font-size:10px;color:#6ee7b7}
-.model-pill{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.45);border-radius:10px;padding:3px 8px;display:flex;align-items:center;gap:5px;font-size:10.5px;color:#6ee7b7}
-.pulse{width:7px;height:7px;border-radius:50%;background:#10b981}
-.btn{cursor:pointer;border:1px solid rgba(148,163,184,.25);background:#1e293b;color:var(--txt);border-radius:9px;padding:7px 10px;font:700 11.5px inherit;display:inline-flex;align-items:center;gap:4px}
-.btn.pri{background:linear-gradient(135deg,#2563eb,#7c3aed);border:none;color:#fff}
-.btn.grn{background:rgba(16,185,129,.2);border-color:rgba(16,185,129,.5);color:#6ee7b7}
-.btn.amb{background:rgba(245,158,11,.18);border-color:rgba(245,158,11,.5);color:#fcd34d}
-.btn.on{background:rgba(139,92,246,.5);border-color:#a78bfa;color:#fff}
-main{max-width:1100px;margin:0 auto;padding:8px;display:flex;flex-direction:column;gap:10px}
-.pad{padding:10px}
+body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--txt);padding-bottom:30px}
+.mono{font-family:monospace}
+.box{background:var(--card);border:1px solid #1e293b;border-radius:12px;padding:10px;margin:8px}
 .row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .between{justify-content:space-between}
-.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
-.model-card{flex:0 0 auto;min-width:140px;cursor:pointer;padding:8px 10px;border-radius:10px;background:#020617;border:1px solid rgba(99,102,241,.35)}
-.model-card.act{border-color:#10b981;background:rgba(16,185,129,.15)}
-.model-card b{display:block;font-size:12px}.model-card small{color:var(--mut);font-size:10px}
-input[type=text],input[type=password],select{width:100%;background:#020617;border:1px solid rgba(59,130,246,.4);border-radius:9px;color:#fff;padding:8px 10px;font:12.5px inherit}
-label{font-size:10.5px;color:var(--mut)}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
-.tab{padding:8px 4px;text-align:center;font-weight:700;font-size:11px;cursor:pointer;border-radius:10px;color:#cbd5e1}
-.tab.act{background:linear-gradient(135deg,rgba(37,99,235,.45),rgba(16,185,129,.35));border-color:#10b981;color:#fff}
-#viewWrap{position:relative}
-#viewport3d{width:100%;height:54vh;min-height:300px;border-radius:12px;overflow:hidden;background:#050811;touch-action:none}
-#hudTop{position:absolute;top:8px;right:8px;left:8px;pointer-events:none;display:flex;justify-content:space-between;gap:6px}
-.hudBox{background:rgba(6,9,19,.88);border:1px solid rgba(59,130,246,.4);border-radius:8px;padding:5px 8px;font-size:10.5px}
-#readout{position:absolute;bottom:8px;right:8px;background:rgba(6,9,19,.88);border:1px solid rgba(16,185,129,.45);border-radius:8px;padding:4px 8px;font-size:10.5px;pointer-events:none;color:#6ee7b7}
+header{background:#0b1120;border-bottom:1px solid #1e293b;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:30}
+.logo{background:linear-gradient(135deg,#10b981,#3b82f6);color:#060913;font-weight:900;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+input[type=text],input[type=password],select{background:#020617;border:1px solid #334155;color:#fff;padding:8px 10px;border-radius:8px;font-size:13px;width:100%}
+input:focus{outline:none;border-color:#10b981}
+.btn{background:#1e293b;color:#fff;border:1px solid #334155;padding:8px 12px;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer}
+.btn:active{transform:scale(0.96)}
+.btn.pri{background:#2563eb;border-color:#3b82f6}
+.btn.grn{background:#059669;border-color:#10b981}
+.btn.amb{background:#d97706;border-color:#f59e0b}
+.btn.on{background:#7c3aed;border-color:#a78bfa}
+#viewport{width:100%;height:360px;background:radial-gradient(circle at center,#131e38 0%,#03060c 100%);border-radius:10px;position:relative;overflow:hidden;touch-action:none}
+#hud{position:absolute;top:8px;right:8px;background:rgba(2,6,23,0.85);border:1px solid #334155;padding:6px 10px;border-radius:8px;font-size:11px;pointer-events:none}
+#statusMsg{position:absolute;bottom:8px;right:8px;left:8px;background:rgba(2,6,23,0.85);padding:5px 8px;border-radius:6px;font-size:11px;color:#34d399;pointer-events:none}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:4px 0}
+.chip{background:#020617;border:1px solid #334155;padding:8px 12px;border-radius:8px;white-space:nowrap;cursor:pointer;font-size:12px;font-weight:700}
+.chip.act{border-color:#10b981;background:#064e3b}
 input[type=range]{width:100%;accent-color:#10b981}
-.bar{background:#020617;border:1px solid rgba(99,102,241,.28);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px}
-table{width:100%;border-collapse:collapse;font-size:11.5px}
-th{color:#6ee7b7;text-align:right;padding:6px;border-bottom:1px solid rgba(16,185,129,.3);background:#0d1428}
-td{padding:6px;border-bottom:1px solid #1e293b}
-.modal{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:14px}
-.modal .glass{max-width:420px;width:100%;padding:14px;display:flex;flex-direction:column;gap:10px}
-.spin{width:36px;height:36px;border:3px solid #3b82f6;border-top-color:#10b981;border-radius:50%;animation:sp 1s linear infinite;margin:0 auto}
-@keyframes sp{to{transform:rotate(360deg)}}
+table{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:6px}
+th,td{padding:6px;border-bottom:1px solid #1e293b;text-align:right}
+th{color:#34d399}
 </style>
 </head>
 <body>
 
-<header class="glass">
-  <div class="row" style="gap:8px;flex-wrap:nowrap">
+<header>
+  <div class="row" style="gap:8px">
     <div class="logo">W</div>
     <div>
-      <h1>WALOW CAD <span style="font-size:9px;padding:1px 6px;border-radius:99px;background:rgba(16,185,129,.25);color:#6ee7b7">FAST</span></h1>
-      <div class="sub">يعمل بدون إنترنت • قياسات mm • تصادم</div>
+      <div style="font-weight:900;font-size:14px">WALOW CAD <span style="color:#10b981;font-size:11px">PRO PBR</span></div>
+      <div style="font-size:10px;color:var(--mut)" id="modelBadge">النموذج: gemini-3.8-flash</div>
     </div>
   </div>
-  <div class="row" style="flex-wrap:nowrap">
-    <div class="model-pill mono">
-      <span class="pulse" id="modelDot"></span>
-      <span id="activeModelLabel">gemini-3.8-flash</span>
-    </div>
-    <button class="btn grn" id="installBtn" onclick="triggerInstallPrompt()">📲 تثبيت</button>
-    <button class="btn amb" onclick="openApiModal()">🔑</button>
-  </div>
+  <span id="netStatus" style="font-size:11px;color:#34d399;font-weight:700">● جاهز</span>
 </header>
 
-<main>
-  <!-- التوليد بالذكاء الاصطناعي -->
-  <section class="glass pad" style="display:flex;flex-direction:column;gap:6px">
-    <div class="row between">
-      <b style="font-size:12.5px;color:#6ee7b7">✨ صمّم أي آلة بالوصف (تحويل تلقائي ذكي)</b>
-      <span id="keyHint" class="mono" style="font-size:10px"></span>
-    </div>
-    <div class="row" style="flex-wrap:nowrap">
-      <input type="text" id="promptInput" placeholder="مثال: محرك 4 سلندر، نظام تعليق، ذراع روبوت..." />
-      <button class="btn pri" onclick="buildWithAIAutoFallback()" style="white-space:nowrap">⚡ صمّم</button>
-    </div>
-  </section>
+<!-- 1. مكان لصق مفتاح Gemini API مباشرة -->
+<div class="box" style="border-color:#f59e0b55">
+  <div class="row between" style="margin-bottom:6px">
+    <b style="font-size:12px;color:#fcd34d">🔑 الصق مفتاح Gemini API هنا:</b>
+    <span id="keySavedBadge" style="font-size:11px;color:#94a3b8">غير محفوظ</span>
+  </div>
+  <div class="row" style="flex-wrap:nowrap">
+    <input type="password" id="apiKeyField" placeholder="AIzaSy... الصق المفتاح هنا" />
+    <button type="button" class="btn grn" onclick="saveKeyNow()" style="white-space:nowrap">حفظ المفتاح</button>
+  </div>
+</div>
 
-  <!-- النماذج الجاهزة السريعة -->
-  <section class="glass pad" style="display:flex;flex-direction:column;gap:6px">
-    <b style="font-size:12px;color:#93c5fd">🧰 نماذج هندسية فورية (بدون إنترنت)</b>
-    <div class="chips" id="presetChips"></div>
-  </section>
+<!-- 2. صندوق تصميم أي آلة بالوصف -->
+<div class="box" style="border-color:#3b82f655">
+  <b style="font-size:12px;color:#93c5fd;display:block;margin-bottom:6px">✨ اكتب وصف الآلة أو السيارة (مع تحويل تلقائي للإصدارات):</b>
+  <div class="row" style="flex-wrap:nowrap">
+    <input type="text" id="promptField" placeholder="مثال: محرك 4 سلندر، نظام تعليق، شاسيه سيارة، رافعة..." />
+    <button type="button" class="btn pri" id="buildBtn" onclick="generateMachine()" style="white-space:nowrap">⚡ صمّم</button>
+  </div>
+  <div id="aiProgress" style="display:none;margin-top:8px;font-size:11.5px;color:#fbbf24;font-weight:700"></div>
+</div>
 
-  <div id="loadingBox" class="glass pad hidden" style="text-align:center">
-    <div class="spin"></div>
-    <p id="loadingStatusText" style="font-weight:700;color:#6ee7b7;margin:6px 0 2px;font-size:12.5px">جاري التصميم...</p>
-    <p id="loadingSubText" class="mono" style="font-size:10.5px;color:var(--mut);margin:0"></p>
+<!-- 3. نماذج هندسية فورية -->
+<div class="box">
+  <b style="font-size:12px;color:#cbd5e1;display:block;margin-bottom:4px">🧰 نماذج جاهزة (تعمل فوراً بدون إنترنت):</b>
+  <div class="chips" id="presetBar">
+    <div class="chip act" onclick="loadPreset('susp', this)">نظام تعليق بنابض</div>
+    <div class="chip" onclick="loadPreset('engine', this)">محرك 4 سلندر</div>
+    <div class="chip" onclick="loadPreset('car', this)">شاسيه سيارة 4×4</div>
+    <div class="chip" onclick="loadPreset('gears', this)">تروس متعاشقة</div>
+  </div>
+</div>
+
+<!-- 4. شاشة العرض ثلاثي الأبعاد -->
+<div class="box">
+  <div id="viewport">
+    <div id="hud">
+      <div style="color:#93c5fd;font-weight:700">📐 الأبعاد الكلية (mm)</div>
+      <div id="dimTotal" class="mono" style="font-weight:700">-- × -- × --</div>
+      <div id="dimPart" style="color:#34d399;margin-top:2px">المس أي قطعة لقياسها</div>
+    </div>
+    <div id="statusMsg">انعكاسات معدنية PBR + ظلال واقعية • اسحب للتدوير</div>
   </div>
 
-  <div class="tabs">
-    <div class="tab glass act" id="btn-tab3d" onclick="switchTab('tab3d')">🧊 المحاكي 3D</div>
-    <div class="tab glass" id="btn-tabBom" onclick="switchTab('tabBom')">🔩 القطع</div>
-    <div class="tab glass" id="btn-tabPhys" onclick="switchTab('tabPhys')">⚙️ الفيزياء</div>
-    <div class="tab glass" id="btn-tabHelp" onclick="switchTab('tabHelp')">📲 التثبيت</div>
+  <!-- أزرار التحكم السريعة -->
+  <div class="row" style="margin-top:8px">
+    <button type="button" class="btn pri" onclick="startAutoAssemble()">▶ تركيب تلقائي</button>
+    <button type="button" class="btn grn" onclick="completeAssemble()">✔ مكتمل</button>
+    <button type="button" class="btn amb" id="physBtn" onclick="togglePhysics()">💥 فيزياء التصادم</button>
+    <button type="button" class="btn" onclick="dropPieces()">⬇️ اختبار سقوط</button>
+    <button type="button" class="btn" id="cutBtn" onclick="toggleCut()">🔪 مقطع داخلي</button>
   </div>
 
-  <div id="tab3d" class="tab-content glass pad" style="display:flex;flex-direction:column;gap:8px">
-    <div id="viewWrap">
-      <div id="viewport3d"></div>
-      <div id="hudTop">
-        <div class="hudBox">
-          <div style="color:#93c5fd;font-weight:700">📐 الأبعاد (mm)</div>
-          <div id="dimTotal" class="mono" style="font-weight:700">W: 0 × H: 0 × D: 0</div>
-          <div id="dimSelected" style="color:#6ee7b7;font-size:10px">المس قطعة لقياسها</div>
-        </div>
-        <div class="hudBox" style="max-width:180px">
-          <b id="stepTag" style="color:#c4b5fd">جاهز</b>
-        </div>
-      </div>
-      <div id="readout" class="mono">RPM: 80</div>
-    </div>
+  <div style="margin-top:8px">
+    <label style="font-size:11px;color:var(--mut)">شريط التركيب اليدوي: <span id="asmPct" class="mono">100%</span></label>
+    <input type="range" id="asmSlider" min="0" max="100" value="100" oninput="scrubAssemble(this.value)" />
+  </div>
 
-    <div class="bar">
-      <div class="row">
-        <button class="btn pri" onclick="asmStart()">▶ تركيب تلقائي</button>
-        <button class="btn grn" onclick="asmComplete()">✔ مكتمل</button>
-        <button class="btn amb" id="physBtn" onclick="toggleCollisionPhysics()">💥 تصادم</button>
-        <button class="btn" onclick="dropTest()">⬇️ سقوط</button>
-        <button class="btn" id="cutBtn" onclick="toggleCutaway()">🔪 مقطع</button>
-      </div>
-      <input type="range" id="asmProgress" min="0" max="1000" value="1000" oninput="asmScrub(this.value)" />
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div>
-          <label>السرعة: <span class="mono" id="rpmVal">80 RPM</span></label>
-          <input type="range" id="rpmRange" min="0" max="300" value="80" oninput="S.rpm=Number(this.value);$('rpmVal').textContent=this.value+' RPM'" />
-        </div>
-        <div>
-          <label>التفكيك: <span class="mono" id="exVal">0%</span></label>
-          <input type="range" id="exRange" min="0" max="100" value="0" oninput="setExplode(this.value)" />
-        </div>
-      </div>
-      <div id="cutControls" class="hidden">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+    <div>
+      <label style="font-size:11px;color:var(--mut)">السرعة: <span id="rpmTxt" class="mono">80 RPM</span></label>
+      <input type="range" min="0" max="300" value="80" oninput="state.rpm=Number(this.value);document.getElementById('rpmTxt').textContent=this.value+' RPM'" />
+    </div>
+    <div>
+      <label style="font-size:11px;color:var(--mut)">تفكيك القطع: <span id="expTxt" class="mono">0%</span></label>
+      <input type="range" id="expSlider" min="0" max="100" value="0" oninput="state.explode=this.value/100;document.getElementById('expTxt').textContent=this.value+'%'" />
+    </div>
+  </div>
+
+  <div id="cutBox" style="display:none;margin-top:6px">
+    <label style="font-size:11px;color:#fca5a5">تحريك مستوى المقطع الداخلي:</label>
+    <input type="range" min="-200" max="200" value="40" oninput="if(clipPlane) clipPlane.constant=this.value/100" />
+  </div>
+</div>
+
+<!-- 5. جدول القطع والقياسات -->
+<div class="box">
+  <b style="font-size:12px;color:#34d399">🔩 جدول القطع والقياسات الهندسية (mm)</b>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>#</th><th>القطعة</th><th>الأبعاد (mm)</th><th>الوظيفة</th></tr></thead>
+      <tbody id="bomTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// ================= إدارة مفتاح Gemini API =================
+function saveKeyNow() {
+  const val = document.getElementById('apiKeyField').value.trim();
+  if (!val) {
+    alert('الرجاء لصق المفتاح في المربع أولاً.');
+    return;
+  }
+  localStorage.setItem('walow_gemini_key', val);
+  checkSavedKey();
+  alert('تم حفظ مفتاح Gemini بنجاح!');
+}
+
+function checkSavedKey() {
+  const k = localStorage.getItem('walow_gemini_key');
+  const badge = document.getElementById('keySavedBadge');
+  if (k) {
+    document.getElementById('apiKeyField').value = k;
+    badge.textContent = '● المفتاح محفوظ وجاهز';
+    badge.style.color = '#10b981';
+  } else {
+    badge.textContent = '○ بانتظار لصق المفتاح';
+    badge.style.color = '#f59e0b';
+  }
+}
+checkSavedKey();
+
+if (typeof THREE === 'undefined') {
+  document.getElementById('netStatus').textContent = '✕ تعذر تحميل مكتبة 3D';
+  document.getElementById('netStatus').style.color = '#ef4444';
+}
+
+// ================= إعداد المشهد + انعكاسات الاستوديو المدمجة + الظلال =================
+const state = {
+  parts: [],
+  rpm: 80,
+  explode: 0,
+  physics: false,
+  cut: false,
+  angle: 0,
+  asmRunning: false,
+  asmProgress: 1
+};
+
+const vp = document.getElementById('viewport');
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, vp.clientWidth / vp.clientHeight, 0.1, 100);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+renderer.setSize(vp.clientWidth, vp.clientHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.25;
+renderer.localClippingEnabled = true;
+vp.appendChild(renderer.domElement);
+
+// توليد بيئة انعكاس استوديو برمجياً بدون تحميل ملفات خارجية (تمنح المعادن لمعاناً واقعياً)
+(function buildFastStudioReflection() {
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const envScene = new THREE.Scene();
+  envScene.background = new THREE.Color(0x1e293b);
