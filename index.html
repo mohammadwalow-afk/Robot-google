@@ -3,203 +3,187 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#060913" />
-<meta name="mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<title>WALOW CAD TURBO PRO</title>
-
-<!-- تحميل نواة Three.js الأساسية فقط لضمان أقصى سرعة -->
+<title>WALOW CAD STUDIO — محرك الواقعية الهندسية</title>
 <script src="https://cloudflare.com"></script>
-
 <style>
-:root{--bg:#060913;--card:#0f172a;--blue:#3b82f6;--green:#10b981;--amber:#f59e0b;--red:#ef4444;--txt:#f8fafc;--mut:#94a3b8}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--txt);padding-bottom:30px}
-.mono{font-family:monospace}
-.box{background:var(--card);border:1px solid #1e293b;border-radius:12px;padding:10px;margin:8px}
-.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.between{justify-content:space-between}
-header{background:#0b1120;border-bottom:1px solid #1e293b;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:30}
-.logo{background:linear-gradient(135deg,#10b981,#3b82f6);color:#060913;font-weight:900;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center}
-input[type=text],input[type=password],select{background:#020617;border:1px solid #334155;color:#fff;padding:8px 10px;border-radius:8px;font-size:13px;width:100%}
-input:focus{outline:none;border-color:#10b981}
-.btn{background:#1e293b;color:#fff;border:1px solid #334155;padding:8px 12px;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer}
-.btn:active{transform:scale(0.96)}
-.btn.pri{background:#2563eb;border-color:#3b82f6}
-.btn.grn{background:#059669;border-color:#10b981}
-.btn.amb{background:#d97706;border-color:#f59e0b}
-.btn.on{background:#7c3aed;border-color:#a78bfa}
-#viewport{width:100%;height:360px;background:radial-gradient(circle at center,#131e38 0%,#03060c 100%);border-radius:10px;position:relative;overflow:hidden;touch-action:none}
-#hud{position:absolute;top:8px;right:8px;background:rgba(2,6,23,0.85);border:1px solid #334155;padding:6px 10px;border-radius:8px;font-size:11px;pointer-events:none}
-#statusMsg{position:absolute;bottom:8px;right:8px;left:8px;background:rgba(2,6,23,0.85);padding:5px 8px;border-radius:6px;font-size:11px;color:#34d399;pointer-events:none}
-.chips{display:flex;gap:6px;overflow-x:auto;padding:4px 0}
-.chip{background:#020617;border:1px solid #334155;padding:8px 12px;border-radius:8px;white-space:nowrap;cursor:pointer;font-size:12px;font-weight:700}
-.chip.act{border-color:#10b981;background:#064e3b}
-input[type=range]{width:100%;accent-color:#10b981}
-table{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:6px}
-th,td{padding:6px;border-bottom:1px solid #1e293b;text-align:right}
-th{color:#34d399}
+  * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+  body { margin: 0; background: #0a0e17; color: #f1f5f9; padding-bottom: 30px; }
+  header { background: #111827; padding: 12px 16px; border-bottom: 1px solid #1f2937; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 30; }
+  .card { background: #111827; border: 1px solid #1f2937; border-radius: 14px; padding: 12px; margin: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  input[type="text"], input[type="password"] { flex: 1; background: #030712; border: 1px solid #374151; color: #fff; padding: 10px 12px; border-radius: 9px; font-size: 13px; min-width: 140px; }
+  input:focus { outline: none; border-color: #38bdf8; }
+  button { background: #1f2937; color: #f8fafc; border: 1px solid #374151; padding: 9px 13px; border-radius: 9px; font-weight: 700; font-size: 12px; cursor: pointer; transition: 0.15s; }
+  button:active { transform: scale(0.95); }
+  .btn-pro { background: linear-gradient(135deg, #2563eb, #0284c7); border: none; color: #fff; }
+  .btn-ok { background: #059669; border-color: #10b981; color: #fff; }
+  .btn-warn { background: #d97706; border-color: #f59e0b; color: #fff; }
+  .btn-on { background: #6d28d9; border-color: #8b5cf6; color: #fff; }
+  #viewport { width: 100%; height: 390px; background: radial-gradient(circle at 50% 40%, #e2e8f0 0%, #94a3b8 65%, #475569 100%); border-radius: 12px; position: relative; overflow: hidden; touch-action: none; border: 1px solid #334155; }
+  #viewport.dark-studio { background: radial-gradient(circle at 50% 40%, #1e293b 0%, #090d16 100%); }
+  #hud { position: absolute; top: 10px; right: 10px; background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(8px); padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(56, 189, 248, 0.4); font-size: 11px; pointer-events: none; color: #f8fafc; }
+  #studioToggle { position: absolute; top: 10px; left: 10px; background: rgba(15, 23, 42, 0.85); border: 1px solid #475569; color: #fff; padding: 6px 10px; border-radius: 8px; font-size: 11px; z-index: 10; }
+  input[type="range"] { width: 100%; accent-color: #0284c7; margin: 5px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+  th, td { padding: 8px; border-bottom: 1px solid #1f2937; text-align: right; }
+  th { color: #38bdf8; }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="row" style="gap:8px">
-    <div class="logo">W</div>
-    <div>
-      <div style="font-weight:900;font-size:14px">WALOW CAD <span style="color:#10b981;font-size:11px">PRO PBR</span></div>
-      <div style="font-size:10px;color:var(--mut)" id="modelBadge">النموذج: gemini-3.8-flash</div>
-    </div>
+  <div>
+    <strong style="font-size:15px;">WALOW CAD <span style="color:#38bdf8;">REALISM</span></strong>
+    <div id="modelLabel" style="font-size:11px; color:#9ca3af;">محرك النمذجة الهندسية • Fusion Grade</div>
   </div>
-  <span id="netStatus" style="font-size:11px;color:#34d399;font-weight:700">● جاهز</span>
+  <span id="engineBadge" style="font-size:11px; color:#10b981; font-weight:bold;">● PBR STUDIO</span>
 </header>
 
-<!-- 1. مكان لصق مفتاح Gemini API مباشرة -->
-<div class="box" style="border-color:#f59e0b55">
-  <div class="row between" style="margin-bottom:6px">
-    <b style="font-size:12px;color:#fcd34d">🔑 الصق مفتاح Gemini API هنا:</b>
-    <span id="keySavedBadge" style="font-size:11px;color:#94a3b8">غير محفوظ</span>
+<!-- 1. مفتاح Gemini API -->
+<div class="card" style="border-color: rgba(245, 158, 11, 0.4);">
+  <div style="font-size:12px; color:#fbbf24; font-weight:bold; margin-bottom:6px;">🔑 الصق مفتاح Gemini API لتصميم أي آلة بالوصف:</div>
+  <div class="row">
+    <input type="password" id="apiKeyInput" placeholder="AIzaSy..." />
+    <button type="button" class="btn-ok" id="saveKeyBtn">حفظ</button>
   </div>
-  <div class="row" style="flex-wrap:nowrap">
-    <input type="password" id="apiKeyField" placeholder="AIzaSy... الصق المفتاح هنا" />
-    <button type="button" class="btn grn" onclick="saveKeyNow()" style="white-space:nowrap">حفظ المفتاح</button>
+  <div id="keyStatus" style="font-size:11px; color:#9ca3af; margin-top:4px;">الحالة: بانتظار المفتاح</div>
+</div>
+
+<!-- 2. التوليد بالوصف -->
+<div class="card" style="border-color: rgba(56, 189, 248, 0.4);">
+  <div style="font-size:12px; color:#38bdf8; font-weight:bold; margin-bottom:6px;">✨ صمّم أي آلة أو محرك أو نظام ميكانيكي:</div>
+  <div class="row">
+    <input type="text" id="promptInput" placeholder="مثال: محرك احتراق داخلي مقطوع، نظام تعليق، توربين، ذراع روبوت..." />
+    <button type="button" class="btn-pro" id="generateBtn">⚡ بناء هندسي</button>
+  </div>
+  <div id="aiStatus" style="font-size:12px; color:#fbbf24; font-weight:bold; margin-top:6px; display:none;"></div>
+</div>
+
+<!-- 3. النماذج الهندسية عالية الواقعية (مطابقة للصور) -->
+<div class="card">
+  <div style="font-size:12px; color:#cbd5e1; font-weight:bold; margin-bottom:8px;">🧰 نماذج هندسية عالية التفاصيل (اضغط للمقارنة):</div>
+  <div class="row">
+    <button type="button" class="preset-btn btn-on" data-type="fusion">نظام تعليق Fusion 360</button>
+    <button type="button" class="preset-btn" data-type="cut_engine">محرك احتراق مقطوع</button>
+    <button type="button" class="preset-btn" data-type="drone_hub">هيكل طائرة مسيّرة CNC</button>
+    <button type="button" class="preset-btn" data-type="gearbox">صندوق تروس مزدوج</button>
   </div>
 </div>
 
-<!-- 2. صندوق تصميم أي آلة بالوصف -->
-<div class="box" style="border-color:#3b82f655">
-  <b style="font-size:12px;color:#93c5fd;display:block;margin-bottom:6px">✨ اكتب وصف الآلة أو السيارة (مع تحويل تلقائي للإصدارات):</b>
-  <div class="row" style="flex-wrap:nowrap">
-    <input type="text" id="promptField" placeholder="مثال: محرك 4 سلندر، نظام تعليق، شاسيه سيارة، رافعة..." />
-    <button type="button" class="btn pri" id="buildBtn" onclick="generateMachine()" style="white-space:nowrap">⚡ صمّم</button>
-  </div>
-  <div id="aiProgress" style="display:none;margin-top:8px;font-size:11.5px;color:#fbbf24;font-weight:700"></div>
-</div>
-
-<!-- 3. نماذج هندسية فورية -->
-<div class="box">
-  <b style="font-size:12px;color:#cbd5e1;display:block;margin-bottom:4px">🧰 نماذج جاهزة (تعمل فوراً بدون إنترنت):</b>
-  <div class="chips" id="presetBar">
-    <div class="chip act" onclick="loadPreset('susp', this)">نظام تعليق بنابض</div>
-    <div class="chip" onclick="loadPreset('engine', this)">محرك 4 سلندر</div>
-    <div class="chip" onclick="loadPreset('car', this)">شاسيه سيارة 4×4</div>
-    <div class="chip" onclick="loadPreset('gears', this)">تروس متعاشقة</div>
-  </div>
-</div>
-
-<!-- 4. شاشة العرض ثلاثي الأبعاد -->
-<div class="box">
+<!-- 4. شاشة العرض ثلاثية الأبعاد -->
+<div class="card">
   <div id="viewport">
+    <button type="button" id="studioToggle">🌗 خلفية داكنة/فاتحة</button>
     <div id="hud">
-      <div style="color:#93c5fd;font-weight:700">📐 الأبعاد الكلية (mm)</div>
-      <div id="dimTotal" class="mono" style="font-weight:700">-- × -- × --</div>
-      <div id="dimPart" style="color:#34d399;margin-top:2px">المس أي قطعة لقياسها</div>
+      <div style="color:#38bdf8; font-weight:bold;">📐 الأبعاد الكلية (mm)</div>
+      <div id="totalDims" style="font-family:monospace; font-weight:bold; margin:2px 0;">-- × -- × --</div>
+      <div id="partDims" style="color:#34d399;">المس أي قطعة لقياسها</div>
     </div>
-    <div id="statusMsg">انعكاسات معدنية PBR + ظلال واقعية • اسحب للتدوير</div>
   </div>
 
-  <!-- أزرار التحكم السريعة -->
-  <div class="row" style="margin-top:8px">
-    <button type="button" class="btn pri" onclick="startAutoAssemble()">▶ تركيب تلقائي</button>
-    <button type="button" class="btn grn" onclick="completeAssemble()">✔ مكتمل</button>
-    <button type="button" class="btn amb" id="physBtn" onclick="togglePhysics()">💥 فيزياء التصادم</button>
-    <button type="button" class="btn" onclick="dropPieces()">⬇️ اختبار سقوط</button>
-    <button type="button" class="btn" id="cutBtn" onclick="toggleCut()">🔪 مقطع داخلي</button>
+  <div class="row" style="margin-top:10px;">
+    <button type="button" class="btn-pro" id="asmStartBtn">▶ تركيب تلقائي</button>
+    <button type="button" class="btn-ok" id="asmDoneBtn">✔ مكتمل</button>
+    <button type="button" class="btn-warn" id="physBtn">💥 فيزياء التصادم</button>
+    <button type="button" id="dropBtn">⬇️ اختبار سقوط</button>
+    <button type="button" id="cutBtn">🔪 مقطع تشريحي</button>
   </div>
 
-  <div style="margin-top:8px">
-    <label style="font-size:11px;color:var(--mut)">شريط التركيب اليدوي: <span id="asmPct" class="mono">100%</span></label>
-    <input type="range" id="asmSlider" min="0" max="100" value="100" oninput="scrubAssemble(this.value)" />
+  <div style="margin-top:8px;">
+    <label style="font-size:11px; color:#9ca3af;">تقدم التركيب: <span id="asmVal">100%</span></label>
+    <input type="range" id="asmSlider" min="0" max="100" value="100" />
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
     <div>
-      <label style="font-size:11px;color:var(--mut)">السرعة: <span id="rpmTxt" class="mono">80 RPM</span></label>
-      <input type="range" min="0" max="300" value="80" oninput="state.rpm=Number(this.value);document.getElementById('rpmTxt').textContent=this.value+' RPM'" />
+      <label style="font-size:11px; color:#9ca3af;">سرعة المحاكاة: <span id="rpmVal">90 RPM</span></label>
+      <input type="range" id="rpmSlider" min="0" max="300" value="90" />
     </div>
     <div>
-      <label style="font-size:11px;color:var(--mut)">تفكيك القطع: <span id="expTxt" class="mono">0%</span></label>
-      <input type="range" id="expSlider" min="0" max="100" value="0" oninput="state.explode=this.value/100;document.getElementById('expTxt').textContent=this.value+'%'" />
+      <label style="font-size:11px; color:#9ca3af;">تفكيك القطع: <span id="expVal">0%</span></label>
+      <input type="range" id="expSlider" min="0" max="100" value="0" />
     </div>
   </div>
 
-  <div id="cutBox" style="display:none;margin-top:6px">
-    <label style="font-size:11px;color:#fca5a5">تحريك مستوى المقطع الداخلي:</label>
-    <input type="range" min="-200" max="200" value="40" oninput="if(clipPlane) clipPlane.constant=this.value/100" />
+  <div id="cutControl" style="display:none; margin-top:8px;">
+    <label style="font-size:11px; color:#fca5a5;">تحريك مستوى القطع:</label>
+    <input type="range" id="cutSlider" min="-200" max="200" value="25" />
   </div>
 </div>
 
-<!-- 5. جدول القطع والقياسات -->
-<div class="box">
-  <b style="font-size:12px;color:#34d399">🔩 جدول القطع والقياسات الهندسية (mm)</b>
-  <div style="overflow-x:auto">
-    <table>
-      <thead><tr><th>#</th><th>القطعة</th><th>الأبعاد (mm)</th><th>الوظيفة</th></tr></thead>
-      <tbody id="bomTable"></tbody>
-    </table>
-  </div>
+<!-- 5. جدول القطع -->
+<div class="card">
+  <strong style="font-size:13px; color:#38bdf8;">🔩 شجرة المكونات الهندسية (BOM)</strong>
+  <table>
+    <thead>
+      <tr><th>#</th><th>اسم القطعة</th><th>الأبعاد (mm)</th><th>الخامة والوظيفة</th></tr>
+    </thead>
+    <tbody id="bomBody"></tbody>
+  </table>
 </div>
 
 <script>
-// ================= إدارة مفتاح Gemini API =================
-function saveKeyNow() {
-  const val = document.getElementById('apiKeyField').value.trim();
-  if (!val) {
-    alert('الرجاء لصق المفتاح في المربع أولاً.');
+document.addEventListener("DOMContentLoaded", function() {
+  // إدارة مفتاح API
+  const keyInput = document.getElementById("apiKeyInput");
+  const keyStatus = document.getElementById("keyStatus");
+  const savedKey = localStorage.getItem("walow_gemini_key");
+  if (savedKey) {
+    keyInput.value = savedKey;
+    keyStatus.textContent = "الحالة: ● المفتاح محفوظ وجاهز";
+    keyStatus.style.color = "#10b981";
+  }
+
+  document.getElementById("saveKeyBtn").addEventListener("click", function() {
+    const val = keyInput.value.trim();
+    if (!val) { alert("الرجاء لصق المفتاح أولاً!"); return; }
+    localStorage.setItem("walow_gemini_key", val);
+    keyStatus.textContent = "الحالة: ● تم حفظ المفتاح بنجاح";
+    keyStatus.style.color = "#10b981";
+    alert("تم حفظ المفتاح!");
+  });
+
+  if (typeof THREE === "undefined") {
+    document.getElementById("engineBadge").textContent = "✕ لا يوجد إنترنت لتحميل 3D";
+    document.getElementById("engineBadge").style.color = "#ef4444";
     return;
   }
-  localStorage.setItem('walow_gemini_key', val);
-  checkSavedKey();
-  alert('تم حفظ مفتاح Gemini بنجاح!');
-}
 
-function checkSavedKey() {
-  const k = localStorage.getItem('walow_gemini_key');
-  const badge = document.getElementById('keySavedBadge');
-  if (k) {
-    document.getElementById('apiKeyField').value = k;
-    badge.textContent = '● المفتاح محفوظ وجاهز';
-    badge.style.color = '#10b981';
-  } else {
-    badge.textContent = '○ بانتظار لصق المفتاح';
-    badge.style.color = '#f59e0b';
-  }
-}
-checkSavedKey();
+  // إعداد المشهد والإضاءة الاستوديو عالية الواقعية (مثل Fusion 360)
+  const box = document.getElementById("viewport");
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, box.clientWidth / box.clientHeight, 0.1, 100);
 
-if (typeof THREE === 'undefined') {
-  document.getElementById('netStatus').textContent = '✕ تعذر تحميل مكتبة 3D';
-  document.getElementById('netStatus').style.color = '#ef4444';
-}
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+  renderer.setSize(box.clientWidth, box.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.2;
+  renderer.localClippingEnabled = true;
+  box.appendChild(renderer.domElement);
 
-// ================= إعداد المشهد + انعكاسات الاستوديو المدمجة + الظلال =================
-const state = {
-  parts: [],
-  rpm: 80,
-  explode: 0,
-  physics: false,
-  cut: false,
-  angle: 0,
-  asmRunning: false,
-  asmProgress: 1
-};
-
-const vp = document.getElementById('viewport');
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, vp.clientWidth / vp.clientHeight, 0.1, 100);
-
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-renderer.setSize(vp.clientWidth, vp.clientHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.25;
-renderer.localClippingEnabled = true;
-vp.appendChild(renderer.domElement);
-
-// توليد بيئة انعكاس استوديو برمجياً بدون تحميل ملفات خارجية (تمنح المعادن لمعاناً واقعياً)
-(function buildFastStudioReflection() {
+  // غرفة انعكاس استوديو مدمجة (PMREM) تعطي المعادن مظهر CAD الحقيقي
   const pmrem = new THREE.PMREMGenerator(renderer);
   const envScene = new THREE.Scene();
-  envScene.background = new THREE.Color(0x1e293b);
+  envScene.background = new THREE.Color(0xcbd5e1);
+  const lightStrip1 = new THREE.Mesh(new THREE.BoxGeometry(14, 0.4, 14), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+  lightStrip1.position.set(0, 8, 0);
+  const lightStrip2 = new THREE.Mesh(new THREE.BoxGeometry(0.4, 10, 14), new THREE.MeshBasicMaterial({ color: 0xe0f2fe }));
+  lightStrip2.position.set(-8, 3, 0);
+  const darkFloor = new THREE.Mesh(new THREE.BoxGeometry(16, 0.4, 16), new THREE.MeshBasicMaterial({ color: 0x334155 }));
+  darkFloor.position.set(0, -6, 0);
+  envScene.add(lightStrip1, lightStrip2, darkFloor);
+  scene.environment = pmrem.fromScene(envScene, 0.04).texture;
+  pmrem.dispose();
+
+  // إضاءة + ظلال
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x475569, 0.6));
+  const sun = new THREE.DirectionalLight(0xffffff, 1.3);
+  sun.position.set(5, 10, 7);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(1024, 1024);
+  sun.shadow.bias = -0.0005;
+  scene.add(sun);
+
